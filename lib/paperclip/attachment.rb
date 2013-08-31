@@ -141,12 +141,22 @@ module Paperclip
     # +#new(Paperclip::Attachment, options_hash)+
     # +#for(style_name, options_hash)+
     def url(style_name = default_style, options = {})
-      default_options = {:timestamp => @options[:use_timestamp], :escape => @options[:escape_url]}
 
-      if options == true || options == false # Backwards compatibility.
-        @url_generator.for(style_name, default_options.merge(:timestamp => options))
+      # The normal url generation is EXTREMELY slow, we have pages
+      # with dozens of images making the page unusable, Since we know
+      # the asset host, and path returns fast, let's just splice them
+      # together ourselves and save the time.
+      if Rails.env =~ /^production/
+        File.join(Rails.configuration.action_controller.asset_host, path)
       else
-        @url_generator.for(style_name, default_options.merge(options))
+        # This is the normal paperclip way
+        default_options = {:timestamp => @options[:use_timestamp], :escape => @options[:escape_url]}
+
+        if options == true || options == false # Backwards compatibility.
+          @url_generator.for(style_name, default_options.merge(:timestamp => options))
+        else
+          @url_generator.for(style_name, default_options.merge(options))
+        end
       end
     end
 
