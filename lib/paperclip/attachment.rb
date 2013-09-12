@@ -147,7 +147,7 @@ module Paperclip
       # the asset host, and path returns fast, let's just splice them
       # together ourselves and save the time.
       if Rails.env =~ /^production/
-        File.join(Rails.configuration.action_controller.asset_host, path(style_name))
+        File.join(Rails.configuration.action_controller.asset_host, path(style_name)) + "?#{updated_at}"
       else
         # This is the normal paperclip way
         default_options = {:timestamp => @options[:use_timestamp], :escape => @options[:escape_url]}
