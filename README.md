@@ -1,6 +1,13 @@
 Paperclip
 =========
 
+### Why this fork
+
+This fork was created to solve one problem:
+
+When using Fog storage the default computation of the url for the attachment is extremely slow.  I have a site that has hundreds of objects to return and compute the url for.  For an end-point that returned 80 objects, it took over one minute to return a simple JSON structure with the URLS (my profiling put it at ~1 second per attachment).  So...I forked the project and tweaked the url method in attachment.rb, taking the response time back down to milliseconds.  I haven't submitted a pull-request becasue the code probably needs a couple more eyes to make it better, but its serving my needs perfectly.
+
+
 [![Build Status](https://secure.travis-ci.org/thoughtbot/paperclip.png?branch=master)](http://travis-ci.org/thoughtbot/paperclip) [![Dependency Status](https://gemnasium.com/thoughtbot/paperclip.png?travis)](https://gemnasium.com/thoughtbot/paperclip) [![Code Climate](https://codeclimate.com/github/thoughtbot/paperclip.png)](https://codeclimate.com/github/thoughtbot/paperclip)
 
 Paperclip is intended as an easy file attachment library for Active Record. The
